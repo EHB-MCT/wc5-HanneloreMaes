@@ -18,7 +18,10 @@ const userSystem = {
   loggedIn: false,
   checkToken(){
       if (this.token !== null){
-        userSystem.updateUser();
+        this.token = userSystem.token;
+        messageSystem.fetchMessages();
+ 
+        document.getElementById('loginWindow').style.display = 'none';                              /*gebruik van een style.display om dat inlogscherm iedere keer als de token overeenkomt te skippen*/
       }
     },
 
@@ -37,7 +40,7 @@ const userSystem = {
   login(email, password) {
     // https://thecrew.cc/api/user/login.php POST
     console.log(email, password);
-    const data = {email: email, password: password};                                                  /**/
+    const data = {email: email, password: password};                                                  /*de eerste e-mail staat voor de naam die in de const data wordt gebruikt voor het aanroepen in verdere code.  De tweede e-mail is de value die opgehaald hebben in submithandler waaraan we de variabel e-mail aan gelijk gaan stellen*/
 
     fetch('https:thecrew.cc/api/user/login.php', {method: 'POST', body: JSON.stringify(data)})        /*stringify zorgt voor leesbare code*/
       .then(response => response.json())                                                              /*response vragen aan json*/
