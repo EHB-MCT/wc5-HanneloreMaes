@@ -6,10 +6,10 @@ const messageSystem = {
 
   sendMessage(msg) {
     // https://thecrew.cc/api/message/create.php?token=__TOKEN__ POST
-    fetch(`https://thecrew.cc/api/message/create.php?token=${userSystem.token}`, {
+    fetch(`https://thecrew.cc/api/message/create.php?token=${userSystem.token}`, {                       /*Telkens gebruik maken van userSystem omdat token in ander object staat en ook om zeker te weten dat we de juiste hebben*/
         method: 'POST',
         body: JSON.stringify({
-          message: ""
+          message: ""                                                                                   /*Bij message moeten we message vanuit inputfield halen, hetzelfde als chatbot wc3 ook voor het weergeven van de messages*/
         })
       })
       .then(response => response.json())
@@ -63,7 +63,7 @@ const userSystem = {
       .then(data => {console.log("Succes",data); 
       this.token = data.token;                                                                        /*data.token is de token die ge krijgt bij inloggen*/
       messageSystem.fetchMessages();
-      document.getElementById('loginWindow').style.display = 'none'
+      document.getElementById('loginWindow').style.display = 'none';
       this.saveToken(); });                                                                           /*token in lokale storage plaatsen*/
   },
 
@@ -74,7 +74,6 @@ const userSystem = {
     fetch(`https://thecrew.cc/api/user/update.php?token=${userSystem.token}`, {method: 'POST'})
     .then(response => response.json())
     .then();
-    
   }
 
   
