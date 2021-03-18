@@ -6,10 +6,26 @@ const messageSystem = {
 
   sendMessage(msg) {
     // https://thecrew.cc/api/message/create.php?token=__TOKEN__ POST
+    fetch(`https://thecrew.cc/api/message/create.php?token=${userSystem.token}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          message: ""
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      });
   },
 
   fetchMessages() {
     // https://thecrew.cc/api/message/read.php?token=__TOKEN__ GET
+    fetch(`https://thecrew.cc/api/message/read.php?token=${userSystem.token}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+ 
+      });
   }
 };
 
@@ -46,6 +62,8 @@ const userSystem = {
       .then(response => response.json())                                                              /*response vragen aan json*/
       .then(data => {console.log("Succes",data); 
       this.token = data.token;                                                                        /*data.token is de token die ge krijgt bij inloggen*/
+      messageSystem.fetchMessages();
+      document.getElementById('loginWindow').style.display = 'none'
       this.saveToken(); });                                                                           /*token in lokale storage plaatsen*/
   },
 
@@ -53,8 +71,9 @@ const userSystem = {
     // https://thecrew.cc/api/user/update.php?token=__TOKEN__ POST
     const dataHandle = {password: password, handle: handle};
 
-    fetch(`https://thecrew.cc/api/user/update.php?token=${this.token}`, {method: 'POST'})
-    .then(response => response.json());
+    fetch(`https://thecrew.cc/api/user/update.php?token=${userSystem.token}`, {method: 'POST'})
+    .then(response => response.json())
+    .then();
     
   }
 
