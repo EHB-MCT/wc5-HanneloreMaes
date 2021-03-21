@@ -27,7 +27,16 @@ const messageSystem = {
       .then(response => response.json())
       .then(data => {
         console.log(data);
- 
+        const container = document.getElementById("output");
+        container.innerHTML = "";
+        data.forEach(messages => {                                                                        /*ophalen van het element vanuit de html om zichtbare acties uit te voeren*/
+          const tekst = `<div class="message">
+          <span class="by">${messages.handle}</span>
+          <span class="on">${messages.created_at}</span>
+          <p>${messages.message}</p>                                                                
+          </div>`;                                                                                        /*messages.message slaat op de variable da we aan de forEach hebben gegeven en de message is de message da we hale uit het inputfield*/
+          container.insertAdjacentHTML("beforeEnd", tekst);                                               /*Before end gebruiken om alles meldingen achter elkaar weer te geven*/
+        });
       });
   }
 };
@@ -89,7 +98,7 @@ const display = {
     const form = document.getElementById("loginForm");
     form.addEventListener('submit', this.submitHandler);
   
-    const messageForm = document.getElementById("messageForm");
+    const messageForm = document.getElementById("messageForm");                                      /*messageForm moet opgehaald worden om de input vanuit het field te halen en te sturen naar de api*/
     messageForm.addEventListener("submit", e => {
       e.preventDefault();
       const message = document.getElementById("MessageField");
@@ -98,14 +107,14 @@ const display = {
 
   },
 
-  submitHandler(e) {
+  submitHandler(e) {                                                                                /*Input van velden ophalen en de value sturen naar API voor login uit te voeren*/
     e.preventDefault();
     const email = document.getElementById("emailField").value;
     const password = document.getElementById("passwordField").value;
     
-    userSystem.login(email,password);
+    userSystem.login(email,password);                                                               /*Sturen van input naar login met de juiste parameters*/
   }
 };
 
   display.initFields();
-  userSystem.checkToken();                                                          /*Bij inloggen token bijhouden en kijken of er een token aanwezig is en zo ja doorsturen naar pagina*/
+  userSystem.checkToken();                                                                          /*Bij inloggen token bijhouden en kijken of er een token aanwezig is en zo ja doorsturen naar pagina*/
