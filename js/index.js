@@ -2,6 +2,9 @@
 
 const messageSystem = {
   startFetching() {
+    setInterval(() => {                                                                                 /*Nodig om de pagina automatisch te laten refreshen*/
+      this.fetchMessages();
+    }, 10);
   },
 
   sendMessage(msg) {
@@ -9,13 +12,13 @@ const messageSystem = {
     fetch(`https://thecrew.cc/api/message/create.php?token=${userSystem.token}`, {                       /*Telkens gebruik maken van userSystem omdat token in ander object staat en ook om zeker te weten dat we de juiste hebben*/
         method: 'POST',
         body: JSON.stringify({
-          message: ""                                                                                   /*Bij message moeten we message vanuit inputfield halen, hetzelfde als chatbot wc3 ook voor het weergeven van de messages*/
-        })
+          "message": msg                                                                                  /*Bij message moeten we message vanuit inputfield halen, hetzelfde als chatbot wc3 ook voor het weergeven van de messages*/
+        })                                                                                                /*Het oproepen van de message moet gedaan worden bij initfields om dan als parameter msg mee te geven aan sendMessage*/
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-      });
+        console.log(data);})
+      .catch(error => console.log("error"));
   },
 
   fetchMessages() {
@@ -64,7 +67,9 @@ const userSystem = {
       this.token = data.token;                                                                        /*data.token is de token die ge krijgt bij inloggen*/
       messageSystem.fetchMessages();
       document.getElementById('loginWindow').style.display = 'none';
-      this.saveToken(); });                                                                           /*token in lokale storage plaatsen*/
+      this.saveToken(); 
+    });                                                                                               /*token in lokale storage plaatsen*/
+  
   },
 
   updateUser(password, handle) {
@@ -83,6 +88,13 @@ const display = {
   initFields() {
     const form = document.getElementById("loginForm");
     form.addEventListener('submit', this.submitHandler);
+  
+    const messageForm = document.getElementById("messageForm");
+    messageForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const message = document.getElementById("MessageField");
+      messageSystem.sendMessage(message);
+    });
 
   },
 
