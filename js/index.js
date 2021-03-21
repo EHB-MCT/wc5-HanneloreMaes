@@ -105,6 +105,13 @@ const display = {
       messageSystem.sendMessage(message);
     });
 
+    const logOutBtn = document.getElementById("options");
+    logOutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      userSystem.logout();
+      document.getElementById("loginWindow").style.display = "block";                             /*Voor pop-up van inlogscherm*/
+    });
+
   },
 
   submitHandler(e) {                                                                                /*Input van velden ophalen en de value sturen naar API voor login uit te voeren*/
