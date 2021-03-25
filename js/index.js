@@ -23,19 +23,19 @@ const messageSystem = {
 
   fetchMessages() {
     // https://thecrew.cc/api/message/read.php?token=__TOKEN__ GET
-    fetch(`https://thecrew.cc/api/message/read.php?token=${userSystem.token}`)
+    fetch(`https://thecrew.cc/api/message/read.php?token=${userSystem.token}`, {method: 'GET'})
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        const container = document.getElementById("output");
-        container.innerHTML = "";
         data.forEach(messages => {                                                                        /*ophalen van het element vanuit de html om zichtbare acties uit te voeren*/
-          const tekst = `<div class="message">
+        const container = document.createElement("div");
+        container.className = "message";
+        container.innerHTML = `
           <span class="by">${messages.handle}</span>
           <span class="on">${messages.created_at}</span>
           <p>${messages.message}</p>                                                                
-          </div>`;                                                                                        /*messages.message slaat op de variable da we aan de forEach hebben gegeven en de message is de message da we hale uit het inputfield*/
-          container.insertAdjacentHTML("beforeEnd", tekst);                                               /*Before end gebruiken om alles meldingen achter elkaar weer te geven*/
+          `;                                                                                        /*messages.message slaat op de variable da we aan de forEach hebben gegeven en de message is de message da we hale uit het inputfield*/
+          document.getElementById("output").appendChild(container);                                               /*Before end gebruiken om alles meldingen achter elkaar weer te geven*/
         });
       });
   }
@@ -45,8 +45,8 @@ const userSystem = {
   token: "",
   loggedIn: false,
   checkToken(){
-      if (this.token !== null){
-        this.token = userSystem.token;
+      if (this.getToken() !== null){
+        this.token = this.getToken();
         messageSystem.fetchMessages();
  
         document.getElementById('loginWindow').style.display = 'none';                              /*gebruik van een style.display om dat inlogscherm iedere keer als de token overeenkomt te skippen*/
